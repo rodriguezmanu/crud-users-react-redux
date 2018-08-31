@@ -32,6 +32,12 @@ const user = (state = { isFetching: false }, action) => {
         isFetching: true
       };
     case LOGIN_SUCCESS:
+      try {
+        const serializedState = JSON.stringify(action.data.access_token);
+        localStorage.setItem('token', serializedState);
+      } catch (err) {
+        console.warn(err);
+      }
       return {
         ...state,
         data: action.data,
@@ -42,9 +48,15 @@ const user = (state = { isFetching: false }, action) => {
       return {
         ...state,
         isAuth: false,
+        error: action.data,
         isFetching: false
       };
     case LOGOUT_SUCCESS:
+      try {
+        localStorage.removeItem('token');
+      } catch (err) {
+        console.warn(err);
+      }
       return {};
     case LOGOUT_FAILURE:
       return {

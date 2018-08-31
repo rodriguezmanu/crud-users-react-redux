@@ -26,7 +26,7 @@ export class Signup extends React.PureComponent {
     const { signup } = this.props;
     console.log(name, email, password);
 
-    // signup(name, email, password);
+    signup(name, email, password);
   }
 
   render() {

@@ -1,0 +1,17 @@
+{
+  "users": [{
+      "id": 1,
+      "name": "Manuel Admin",
+      "email": "rodriguez.manu@gmail.com",
+      "role": "admin",
+      "password": "Qwerty1234@"
+    },
+    {
+      "id": 2,
+      "name": "Manuel User",
+      "email": "rodriguez.manu@gmail.com1",
+      "role": "user",
+      "password": "Qwerty1234@1"
+    }
+  ]
+}

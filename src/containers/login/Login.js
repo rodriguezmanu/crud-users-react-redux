@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../../actions/user.actions';
+import { emailPattern, passwordPattern } from '../../constants/variables';
 
 export class Login extends React.Component {
 
@@ -32,19 +33,21 @@ export class Login extends React.Component {
       {
         id: 'email',
         value: e.target.email.value,
-        pattern: /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/
+        pattern: emailPattern
       },
       {
         id: 'password',
         value: e.target.password.value,
-        pattern: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/
+        pattern: passwordPattern
       }
     ];
 
-    this.validateForm(form);
+    if (this.validateForm(form)) {
+      const { email: { value: email }, password: { value: password } } = e.target;
+      const { login } = this.props;
 
-    const { login } = this.props;
-      // login(email, password);
+      login(email, password);
+    }
   }
 
   /**
@@ -67,11 +70,15 @@ export class Login extends React.Component {
         isValid = false;
       }
     }
+
     this.setState({ isValidForm: isValid });
+
+    return isValid;
   };
 
   render() {
     const { isValidForm, emailValidator, passwordValidator } = this.state;
+    const { user } = this.props;
 
     return (
       <div className="container">
@@ -97,11 +104,15 @@ export class Login extends React.Component {
           </div>
           <div className="form-group text-center">
             <button type="submit" className="btn btn-primary">Submit</button>
-            <button type="clear" className="btn btn-default">Clear</button>
           </div>
           {!isValidForm && (
             <div className="alert alert-danger">
               Form invalid, please check again
+            </div>
+          )}
+          {user.error && (
+            <div className="alert alert-danger">
+              {user.error.message}
             </div>
           )}
         </form>
