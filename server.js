@@ -14,39 +14,57 @@ server.use(jsonServer.defaults());
 const SECRET_KEY = '123456789';
 const expiresIn = '24h';
 
-// Create a token from a payload
+/**
+ * Create a token from a payload
+ * @param {Object} payload
+ */
 function createToken(payload) {
   return jwt.sign(payload, SECRET_KEY, {expiresIn});
 }
 
-// Verify the token
+/**
+ * Verify the token
+ * @param {String} token
+ */
 function verifyToken(token) {
   return jwt.verify(token, SECRET_KEY, (err, decode) => decode !== undefined ?  decode : err);
 }
 
-// Check if the user exists in database
+/**
+ * Check if the user exists in database
+ * @param {String} email
+ * @param {String} password
+ * @returns {Boolean}
+ */
 function isAuthenticated({email, password}){
-  return userdb.users.findIndex(user => user.email === email && user.password === password) !== -1;
+  return userdb.users.find(user => user.email === email && user.password === password);
 }
 
-
 server.post('/auth/login', (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
+  const user = isAuthenticated({email, password});
 
-  if (isAuthenticated({email, password}) === false) {
-    const status = 401;
-    const message = 'Incorrect email or password';
-    res.status(status).json({status, message});
+  if (user) {
+
+    const userClone = Object.assign({}, user);
+    delete userClone.password;
+
+    const access_token = createToken(userClone);
+    res.status(200).json({access_token, ...userClone});
     return;
   }
-  const access_token = createToken({email, password});
-  res.status(200).json({access_token});
+  const status = 401;
+  const message = 'Incorrect email or password';
+
+  res.status(status).json({status, message});
+  return;
 })
 
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
   if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
     const status = 401;
     const message = 'Error in authorization format';
+
     res.status(status).json({status, message});
     return;
   }
@@ -56,6 +74,7 @@ server.use(/^(?!\/auth).*$/,  (req, res, next) => {
   } catch (err) {
     const status = 401;
     const message = 'Error access_token is revoked';
+
     res.status(status).json({status, message});
   }
 })

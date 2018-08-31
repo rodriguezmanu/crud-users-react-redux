@@ -6,7 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT_SUCCESS,
-  LOGOUT_FAILURE,
+  ME_SUCCESS
 } from '../constants/actionTypes';
 
 const user = (state = { isFetching: false }, action) => {
@@ -58,11 +58,12 @@ const user = (state = { isFetching: false }, action) => {
         console.warn(err);
       }
       return {};
-    case LOGOUT_FAILURE:
+    case ME_SUCCESS:
       return {
         ...state,
+        data: action.user,
         isAuth: true,
-        isFetching: false,
+        isFetching: false
       };
     default:
       return state;

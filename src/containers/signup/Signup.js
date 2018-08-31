@@ -24,7 +24,6 @@ export class Signup extends React.PureComponent {
     e.preventDefault();
     const { name: { value: name }, email: { value: email }, password: { value: password } } = e.target;
     const { signup } = this.props;
-    console.log(name, email, password);
 
     signup(name, email, password);
   }
@@ -48,7 +47,6 @@ export class Signup extends React.PureComponent {
           </div>
           <div className="form-group text-center">
               <button type="submit" className="btn btn-primary">Submit</button>
-              <button type="clear" className="btn btn-default">Clear</button>
           </div>
         </form>
       </div>

@@ -6,6 +6,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
   LOGOUT_SUCCESS,
+  ME_SUCCESS
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { post } from '../middleware/api';
@@ -48,4 +49,12 @@ export const login = (email, password) => (dispatch) => {
  */
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT_SUCCESS });
+};
+
+/**
+ * Me handler
+ * @param {Object} user
+ */
+export const me = (user) => (dispatch) => {
+  dispatch({ type: ME_SUCCESS, user });
 };
