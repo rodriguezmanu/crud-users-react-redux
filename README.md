@@ -1,7 +1,7 @@
 ## REDUX REACT ROLES CRUD APP
 
-#RUN
+RUN
 
 - $ npm i
-- npm start
-- npm run start-api
+- $ npm start
+- $ npm run start-api
