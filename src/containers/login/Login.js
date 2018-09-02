@@ -18,8 +18,9 @@ export class Login extends React.Component {
   /**
    * Handler change form
    */
-  handleChange = (event) => {
-    const { name, value } = event.target;
+  handleChange = (e) => {
+    const { name, value } = e.target;
+
     this.setState({ [name]: value });
   }
 
@@ -28,22 +29,22 @@ export class Login extends React.Component {
    */
   handleSubmit = (e) => {
     e.preventDefault();
+    const { email: { value: email }, password: { value: password } } = e.target;
 
     const form = [
       {
         id: 'email',
-        value: e.target.email.value,
+        value: email,
         pattern: emailPattern
       },
       {
         id: 'password',
-        value: e.target.password.value,
+        value: password,
         pattern: passwordPattern
       }
     ];
 
     if (this.validateForm(form)) {
-      const { email: { value: email }, password: { value: password } } = e.target;
       const { login } = this.props;
 
       login(email, password);

@@ -27,7 +27,7 @@ function createToken(payload) {
  * @param {String} token
  */
 function verifyToken(token) {
-  return jwt.verify(token, SECRET_KEY, (err, decode) => decode !== undefined ?  decode : err);
+  return jwt.verify(token, SECRET_KEY, (err, decode) => decode ?  decode : err);
 }
 
 /**
@@ -58,10 +58,10 @@ server.post('/auth/login', (req, res) => {
 
   res.status(status).json({status, message});
   return;
-})
+});
 
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
-  if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+  if (!req.headers.authorization || req.headers.authorization.split(' ')[0] !== 'Bearer') {
     const status = 401;
     const message = 'Error in authorization format';
 
@@ -77,10 +77,14 @@ server.use(/^(?!\/auth).*$/,  (req, res, next) => {
 
     res.status(status).json({status, message});
   }
-})
+});
+
+server.use(jsonServer.rewriter({
+  '/auth/signup': '/users'
+}))
 
 server.use(router);
 
 server.listen(3004, () => {
   console.log('Run API Server')
-})
+});

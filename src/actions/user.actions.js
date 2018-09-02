@@ -17,11 +17,11 @@ import { post } from '../middleware/api';
  * @param {String} email
  * @param {String} password
  */
-export const signup = ({ name, email, password }) => (dispatch) => {
+export const signup = (name, email, password, role) => (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
   post({
-    url: API.USERS.AUTH.SIGNUP,
-    body: { name, email, password },
+    url: API.URL + API.USERS.AUTH.SIGNUP,
+    body: { name, email, password, role },
     success: SIGNUP_SUCCESS,
     failure: SIGNUP_FAILURE,
     dispatch,

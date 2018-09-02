@@ -1,10 +1,8 @@
-// import {}
 /**
  * Get headers
- * @param {String} action
  * @return {Object} headers
  */
-const getHeaders = (action) => {
+const getHeaders = () => {
   const token = localStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',

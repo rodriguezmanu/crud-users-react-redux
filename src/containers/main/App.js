@@ -1,16 +1,17 @@
 import React from 'react';
 import {
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
   Link
 } from 'react-router-dom';
-import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
+import Authorization from '../authorization/Authorization';
 import Users from '../users/Users';
 import Home from '../../components/home/Home';
 import PrivateRoute from '../privateRoute/PrivateRoute';
@@ -33,6 +34,7 @@ class App extends React.PureComponent {
     if (token) {
       const user = jwtDecode(token);
       const { me } = this.props;
+
       me(user);
     }
   };
@@ -49,19 +51,28 @@ class App extends React.PureComponent {
     logout();
   };
 
+  /**
+   * Handler redirection authorization depends on roles
+   * @param {Object} user
+   * @return {String} jsx
+   */
+  redirectionAuth = (user) => {
+    if (user.isAuth && user.data.role === adminRole) {
+      return <Redirect to="/users" />;
+    } else if (user.isAuth && user.data.role === userRole) {
+      return <Redirect to="/home" />;
+    }
+  };
+
   render() {
-    const history = createBrowserHistory();
+    const User = Authorization(['user']);
+    const Admin = Authorization(['admin']);
     const { user } = this.props;
 
-    if (user.isAuth && user.data.role === adminRole) {
-      history.push('/users');
-    } else if (user.isAuth && user.data.role === userRole) {
-      history.push('/home');
-    }
-
     return (
-      <Router history={history}>
+      <Router>
         <div>
+          {this.redirectionAuth(user)}
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="navbar-brand">APP</div>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +88,7 @@ class App extends React.PureComponent {
                   </li>
                   <li className="nav-item">
                     <div className="nav-item">
-                      <a className="nav-link" href="#" onClick={this.logoutHandler}>Logout</a>
+                      <a className="nav-link" href="" onClick={this.logoutHandler}>Logout</a>
                     </div>
                   </li>
                 </ul>
@@ -100,9 +111,9 @@ class App extends React.PureComponent {
           <div className="page-container">
             <Switch>
               <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <PrivateRoute exact path="/users" component={Users} authorizedRole="admin"/>
-              <PrivateRoute exact path="/home" component={Home} authorizedRole="user"/>
+              <Route path="/signup" component={Signup} />
+              <PrivateRoute path="/users" component={Admin(Users)}/>
+              <PrivateRoute path="/home" component={User(Home)}/>
               <Redirect to="/login" />
             </Switch>
           </div>

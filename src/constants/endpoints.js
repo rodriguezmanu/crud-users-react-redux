@@ -3,8 +3,7 @@ export const API = {
   USERS: {
     AUTH: {
       LOGIN: '/auth/login',
-      LOGOUT: '/access-tokens',
-      SIGNUP: '/users'
+      SIGNUP: '/auth/signup'
     },
     CREATE: '/users',
     DELETE: '/users',
