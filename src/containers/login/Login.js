@@ -4,44 +4,46 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/user.actions';
 import { emailPattern, passwordPattern } from '../../constants/variables';
 
-export class Login extends React.Component {
-
+export class Login extends React.PureComponent {
   state = {
-    isValidForm: true
-  }
+    isValidForm: true,
+  };
 
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
-    login: PropTypes.func.isRequired
-  }
+    login: PropTypes.func.isRequired,
+  };
 
   /**
    * Handler change form
    */
-  handleChange = (e) => {
+  handleChange = e => {
     const { name, value } = e.target;
 
     this.setState({ [name]: value });
-  }
+  };
 
   /**
    * Submit handler
    */
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
-    const { email: { value: email }, password: { value: password } } = e.target;
+    const {
+      email: { value: email },
+      password: { value: password },
+    } = e.target;
 
     const form = [
       {
         id: 'email',
         value: email,
-        pattern: emailPattern
+        pattern: emailPattern,
       },
       {
         id: 'password',
         value: password,
-        pattern: passwordPattern
-      }
+        pattern: passwordPattern,
+      },
     ];
 
     if (this.validateForm(form)) {
@@ -49,13 +51,13 @@ export class Login extends React.Component {
 
       login(email, password);
     }
-  }
+  };
 
   /**
    * Validation Form
    * @param {Array} form
    */
-  validateForm = (form) => {
+  validateForm = form => {
     let isValid = true;
 
     for (let index = 0; index < form.length; index++) {
@@ -64,7 +66,7 @@ export class Login extends React.Component {
       const res = regex.test(element.value);
 
       this.setState({
-        [element.id+'Validator']: res
+        [`${element.id}Validator`]: res,
       });
 
       if (!res) {
@@ -87,47 +89,59 @@ export class Login extends React.Component {
         <form name="form" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input className="form-control" onChange={this.handleChange} name="email" autoComplete="username" type="email" placeholder="Email"/>
-            {!emailValidator && !isValidForm && (
-              <small className="form-text text-muted">
-                Email invalid
-              </small>
-            )}
+            <input
+              className="form-control"
+              onChange={this.handleChange}
+              name="email"
+              autoComplete="username"
+              type="email"
+              placeholder="Email"
+            />
+            {!emailValidator &&
+              !isValidForm && <small className="form-text text-muted">Email invalid</small>}
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input className="form-control" onChange={this.handleChange} name="password" autoComplete="current-password" type="password" placeholder="Password"/>
-            {!passwordValidator && !isValidForm && (
-              <small className="form-text text-muted">
-                Minimum eight characters, at least one letter, one number and one special character
-              </small>
-            )}
+            <input
+              className="form-control"
+              onChange={this.handleChange}
+              name="password"
+              autoComplete="current-password"
+              type="password"
+              placeholder="Password"
+            />
+            {!passwordValidator &&
+              !isValidForm && (
+                <small className="form-text text-muted">
+                  Minimum eight characters, at least one letter, one number and one special
+                  character
+                </small>
+              )}
           </div>
           <div className="form-group text-center">
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
           </div>
           {!isValidForm && (
-            <div className="alert alert-danger">
-              Form invalid, please check again
-            </div>
+            <div className="alert alert-danger">Form invalid, please check again</div>
           )}
-          {user.error && (
-            <div className="alert alert-danger">
-              {user.error.message}
-            </div>
-          )}
+          {user.error && <div className="alert alert-danger">{user.error.message}</div>}
         </form>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user
+const mapStateToProps = state => ({
+  user: state.user,
 });
 
 const mapDispatchToProps = {
-  login
+  login,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

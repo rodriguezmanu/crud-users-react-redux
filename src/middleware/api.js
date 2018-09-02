@@ -10,7 +10,7 @@ const getHeaders = () => {
 
   if (token) {
     const tokenParsed = JSON.parse(token);
-    headers['Authentication'] = `Bearer ${tokenParsed.jwt}`;
+    headers.Authentication = `Bearer ${tokenParsed.jwt}`;
   }
 
   return headers;
@@ -25,9 +25,7 @@ const getHeaders = () => {
  * @param {String} failure
  * @param {Object} dispatch
  */
-export const post = async ({
-  url, body, success, failure, dispatch
-}) => {
+export const post = async ({ url, body, success, failure, dispatch }) => {
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -47,7 +45,6 @@ export const post = async ({
   }
 };
 
-
 /**
  * Delete from API
  *
@@ -57,9 +54,7 @@ export const post = async ({
  * @param {String} failure
  * @param {Object} dispatch
  */
-export const remove = async ({
-  url, body, success, failure, dispatch,
-}) => {
+export const remove = async ({ url, body, success, failure, dispatch }) => {
   try {
     const res = await fetch(url, {
       method: 'DELETE',
@@ -85,9 +80,7 @@ export const remove = async ({
  * @param {String} failure
  * @param {Object} dispatch
  */
-export const get = async ({
-  url, success, failure, dispatch,
-}) => {
+export const get = async ({ url, success, failure, dispatch }) => {
   try {
     const res = await fetch(url, {
       method: 'GET',

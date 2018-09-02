@@ -5,28 +5,23 @@ import { connect } from 'react-redux';
 export default function Authorization(allowedRoles) {
   return WrappedComponent => {
     class WithAuthorization extends React.PureComponent {
-
       static propTypes = {
         user: PropTypes.shape({}).isRequired,
       };
 
       render() {
         const { user } = this.props;
-
-        console.log('Authorization');
-
         if (allowedRoles.includes(user.data.role)) {
           return <WrappedComponent {...this.props} />;
-        } else {
-          return <h1>No page for you!</h1>;
         }
+        return null;
       }
-    };
+    }
 
-    const mapStateToProps = (state) => ({
-      user: state.user
+    const mapStateToProps = state => ({
+      user: state.user,
     });
 
     return connect(mapStateToProps)(WithAuthorization);
   };
-};
+}

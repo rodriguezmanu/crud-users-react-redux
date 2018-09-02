@@ -1,27 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 export class Users extends React.PureComponent {
   static propTypes = {
-    prop: PropTypes
-  }
+    prop: PropTypes,
+  };
 
   render() {
-    return (
-      <div>
-      Users
-      </div>
-    )
+    return <div>Users</div>;
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({});
 
-})
+const mapDispatchToProps = {};
 
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Users)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users);

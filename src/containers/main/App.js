@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-  Link
-} from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { BrowserRouter as Router, Route, Switch, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import jwtDecode from 'jwt-decode';
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
 import Authorization from '../authorization/Authorization';
@@ -16,14 +10,16 @@ import Users from '../users/Users';
 import Home from '../../components/home/Home';
 import PrivateRoute from '../privateRoute/PrivateRoute';
 import { logout, me } from '../../actions/user.actions';
-import jwtDecode from 'jwt-decode';
 import { userRole, adminRole } from '../../constants/variables';
 
 class App extends React.PureComponent {
-
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+  };
+
+  componentDidMount() {
+    this.handlerMe();
   }
 
   /**
@@ -39,10 +35,6 @@ class App extends React.PureComponent {
     }
   };
 
-  componentDidMount() {
-    this.handlerMe();
-  }
-
   /**
    * Logout Handler
    */
@@ -56,10 +48,11 @@ class App extends React.PureComponent {
    * @param {Object} user
    * @return {String} jsx
    */
-  redirectionAuth = (user) => {
+  redirectionAuth = user => {
     if (user.isAuth && user.data.role === adminRole) {
       return <Redirect to="/users" />;
-    } else if (user.isAuth && user.data.role === userRole) {
+    }
+    if (user.isAuth && user.data.role === userRole) {
       return <Redirect to="/home" />;
     }
   };
@@ -75,20 +68,28 @@ class App extends React.PureComponent {
           {this.redirectionAuth(user)}
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="navbar-brand">APP</div>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon" />
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               {user.isAuth ? (
                 <ul className="navbar-nav">
                   <li>
-                    <div className="nav-item nav-link">
-                      {user.data.name}
-                    </div>
+                    <div className="nav-item nav-link">{user.data.name}</div>
                   </li>
                   <li className="nav-item">
                     <div className="nav-item">
-                      <a className="nav-link" href="" onClick={this.logoutHandler}>Logout</a>
+                      <button className="nav-link" type="button" onClick={this.logoutHandler}>
+                        Logout
+                      </button>
                     </div>
                   </li>
                 </ul>
@@ -112,8 +113,8 @@ class App extends React.PureComponent {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
-              <PrivateRoute path="/users" component={Admin(Users)}/>
-              <PrivateRoute path="/home" component={User(Home)}/>
+              <PrivateRoute path="/users" component={Admin(Users)} />
+              <PrivateRoute path="/home" component={User(Home)} />
               <Redirect to="/login" />
             </Switch>
           </div>
@@ -123,13 +124,16 @@ class App extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user
+const mapStateToProps = state => ({
+  user: state.user,
 });
 
 const mapDispatchToProps = {
   logout,
-  me
+  me,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

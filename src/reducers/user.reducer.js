@@ -6,7 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT_SUCCESS,
-  ME_SUCCESS
+  ME_SUCCESS,
 } from '../constants/actionTypes';
 
 const user = (state = { isFetching: false }, action) => {
@@ -24,12 +24,12 @@ const user = (state = { isFetching: false }, action) => {
     case SIGNUP_FAILURE:
       return {
         ...state,
-        isFetching: false
+        isFetching: false,
       };
     case LOGIN_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
       };
     case LOGIN_SUCCESS:
       try {
@@ -42,14 +42,14 @@ const user = (state = { isFetching: false }, action) => {
         ...state,
         data: action.data,
         isAuth: true,
-        isFetching: false
+        isFetching: false,
       };
     case LOGIN_FAILURE:
       return {
         ...state,
         isAuth: false,
         error: action.data,
-        isFetching: false
+        isFetching: false,
       };
     case LOGOUT_SUCCESS:
       try {
@@ -63,7 +63,7 @@ const user = (state = { isFetching: false }, action) => {
         ...state,
         data: action.user,
         isAuth: true,
-        isFetching: false
+        isFetching: false,
       };
     default:
       return state;

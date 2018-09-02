@@ -6,7 +6,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
   LOGOUT_SUCCESS,
-  ME_SUCCESS
+  ME_SUCCESS,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { post } from '../middleware/api';
@@ -17,11 +17,16 @@ import { post } from '../middleware/api';
  * @param {String} email
  * @param {String} password
  */
-export const signup = (name, email, password, role) => (dispatch) => {
+export const signup = (name, email, password, role) => dispatch => {
   dispatch({ type: SIGNUP_REQUEST });
   post({
     url: API.URL + API.USERS.AUTH.SIGNUP,
-    body: { name, email, password, role },
+    body: {
+      name,
+      email,
+      password,
+      role,
+    },
     success: SIGNUP_SUCCESS,
     failure: SIGNUP_FAILURE,
     dispatch,
@@ -33,7 +38,7 @@ export const signup = (name, email, password, role) => (dispatch) => {
  * @param {String} email
  * @param {String} password
  */
-export const login = (email, password) => (dispatch) => {
+export const login = (email, password) => dispatch => {
   dispatch({ type: LOGIN_REQUEST });
   post({
     url: API.URL + API.USERS.AUTH.LOGIN,
@@ -47,7 +52,7 @@ export const login = (email, password) => (dispatch) => {
 /**
  * Logout handler
  */
-export const logout = () => (dispatch) => {
+export const logout = () => dispatch => {
   dispatch({ type: LOGOUT_SUCCESS });
 };
 
@@ -55,6 +60,6 @@ export const logout = () => (dispatch) => {
  * Me handler
  * @param {Object} user
  */
-export const me = (user) => (dispatch) => {
+export const me = user => dispatch => {
   dispatch({ type: ME_SUCCESS, user });
 };

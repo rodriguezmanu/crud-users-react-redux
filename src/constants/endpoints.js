@@ -3,13 +3,13 @@ export const API = {
   USERS: {
     AUTH: {
       LOGIN: '/auth/login',
-      SIGNUP: '/auth/signup'
+      SIGNUP: '/auth/signup',
     },
     CREATE: '/users',
     DELETE: '/users',
     UPDATE: '/users',
-    GET: '/users'
-  }
+    GET: '/users',
+  },
 };
 
 export default API;
