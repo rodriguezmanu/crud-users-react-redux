@@ -3,14 +3,13 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
 import rootReducer from '../reducers';
+import api from '../middleware/api';
 
-const configureStore = (preloadedState) => {
+const configureStore = preloadedState => {
   const store = createStore(
     rootReducer,
     preloadedState,
-    composeWithDevTools(
-      applyMiddleware(thunk, logger),
-    ),
+    composeWithDevTools(applyMiddleware(thunk, api, logger))
   );
 
   if (module.hot) {

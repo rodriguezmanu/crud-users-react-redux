@@ -9,7 +9,12 @@ import {
   ME_SUCCESS,
 } from '../constants/actionTypes';
 
-const user = (state = { isFetching: false }, action) => {
+const initialState = {
+  isFetching: false,
+  isAuth: false,
+};
+
+const user = (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_REQUEST:
       return {
@@ -32,12 +37,7 @@ const user = (state = { isFetching: false }, action) => {
         isFetching: true,
       };
     case LOGIN_SUCCESS:
-      try {
-        const serializedState = JSON.stringify(action.data.access_token);
-        localStorage.setItem('token', serializedState);
-      } catch (err) {
-        console.warn(err);
-      }
+      localStorage.setItem('token', JSON.stringify(action.data.access_token));
       return {
         ...state,
         data: action.data,
@@ -52,11 +52,7 @@ const user = (state = { isFetching: false }, action) => {
         isFetching: false,
       };
     case LOGOUT_SUCCESS:
-      try {
-        localStorage.removeItem('token');
-      } catch (err) {
-        console.warn(err);
-      }
+      localStorage.removeItem('token');
       return {};
     case ME_SUCCESS:
       return {

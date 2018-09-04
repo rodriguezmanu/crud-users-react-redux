@@ -1,14 +1,63 @@
+export const CALL_API = 'Call API';
+
+/**
+ * Handle communication with web service
+ *
+ * @param {Object} callAPI
+ * @param {Object} next
+ * @param {Object} actionWith
+ * @param {Object} store
+ */
+export const api = async (callAPI, next, actionWith, store) => {
+  const [requestType, successType, failureType, nextType] = callAPI.types;
+
+  try {
+    const res = await fetch(callAPI.endpoint, {
+      method: callAPI.method,
+      headers: getHeaders(store),
+      body: JSON.stringify(callAPI.payload),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      next(
+        actionWith({
+          data,
+          type: successType,
+        })
+      );
+      if (nextType) {
+        if (nextType.type === 'login') {
+          store.dispatch(nextType.action(data.email, data.password));
+        }
+      }
+    } else {
+      next(
+        actionWith({
+          data,
+          type: failureType,
+        })
+      );
+    }
+  } catch (e) {
+    next(
+      actionWith({
+        type: failureType,
+        error: e.message || 'error',
+      })
+    );
+  }
+};
 /**
  * Get headers
- * @return {Object} headers
+ * @return {Object} store
  */
-const getHeaders = () => {
+const getHeaders = store => {
   const token = localStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  if (token) {
+  if (token && store.getStore().isAuth) {
     const tokenParsed = JSON.parse(token);
     headers.Authentication = `Bearer ${tokenParsed.jwt}`;
   }
@@ -16,85 +65,23 @@ const getHeaders = () => {
   return headers;
 };
 
-/**
- * POST from API
- *
- * @param {String} url
- * @param {Object} body
- * @param {String} success
- * @param {String} failure
- * @param {Object} dispatch
- */
-export const post = async ({ url, body, success, failure, dispatch }) => {
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: getHeaders(success),
-      body: JSON.stringify(body),
-    });
+// Default middleware
+export default store => next => action => {
+  const callAPI = action[CALL_API];
 
-    const data = await res.json();
+  if (callAPI) {
+    const { types } = callAPI;
+    const [requestType] = types;
+    const actionWith = data => {
+      const finalAction = Object.assign({}, action, data);
+      delete finalAction[CALL_API];
+      return finalAction;
+    };
 
-    if (res.ok) {
-      dispatch({ type: success, data });
-    } else {
-      dispatch({ type: failure, data });
-    }
-  } catch (e) {
-    dispatch({ type: failure });
-  }
-};
+    next(actionWith({ type: requestType }));
 
-/**
- * Delete from API
- *
- * @param {String} url
- * @param {Object} body
- * @param {String} success
- * @param {String} failure
- * @param {Object} dispatch
- */
-export const remove = async ({ url, body, success, failure, dispatch }) => {
-  try {
-    const res = await fetch(url, {
-      method: 'DELETE',
-      headers: getHeaders(success),
-      body: JSON.stringify(body),
-    });
-    if (res.ok) {
-      dispatch({ type: success });
-    } else {
-      dispatch({ type: failure });
-    }
-  } catch (e) {
-    dispatch({ type: failure });
-  }
-};
-
-/**
- * GET from API
- *
- * @param {String} url
- * @param {Object} body
- * @param {String} success
- * @param {String} failure
- * @param {Object} dispatch
- */
-export const get = async ({ url, success, failure, dispatch }) => {
-  try {
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: getHeaders(success),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      dispatch({ type: success, data });
-    } else {
-      dispatch({ type: failure });
-    }
-  } catch (e) {
-    dispatch({ type: failure });
+    api(callAPI, next, actionWith, store);
+  } else {
+    return next(action);
   }
 };

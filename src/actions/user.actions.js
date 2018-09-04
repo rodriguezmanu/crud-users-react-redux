@@ -9,7 +9,7 @@ import {
   ME_SUCCESS,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
-import { post } from '../middleware/api';
+import { CALL_API } from '../middleware/api';
 
 /**
  * Signup API handler
@@ -17,37 +17,28 @@ import { post } from '../middleware/api';
  * @param {String} email
  * @param {String} password
  */
-export const signup = (name, email, password, role) => dispatch => {
-  dispatch({ type: SIGNUP_REQUEST });
-  post({
-    url: API.URL + API.USERS.AUTH.SIGNUP,
-    body: {
-      name,
-      email,
-      password,
-      role,
-    },
-    success: SIGNUP_SUCCESS,
-    failure: SIGNUP_FAILURE,
-    dispatch,
-  });
-};
+export const signup = (name, email, password, role) => ({
+  [CALL_API]: {
+    payload: { name, email, password, role },
+    method: 'post',
+    types: [SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE, { type: 'login', action: login }],
+    endpoint: API.URL + API.USERS.AUTH.SIGNUP,
+  },
+});
 
 /**
  * Login API handler
  * @param {String} email
  * @param {String} password
  */
-export const login = (email, password) => dispatch => {
-  dispatch({ type: LOGIN_REQUEST });
-  post({
-    url: API.URL + API.USERS.AUTH.LOGIN,
-    body: { email, password },
-    success: LOGIN_SUCCESS,
-    failure: LOGIN_FAILURE,
-    dispatch,
-  });
-};
+export const login = (email, password) => ({
+  [CALL_API]: {
+    payload: { email, password },
+    method: 'post',
+    types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
+    endpoint: API.URL + API.USERS.AUTH.LOGIN,
+  },
+});
 
 /**
  * Logout handler
