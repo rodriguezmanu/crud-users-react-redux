@@ -14,7 +14,7 @@ export const api = async (callAPI, next, actionWith, store) => {
   try {
     const res = await fetch(callAPI.endpoint, {
       method: callAPI.method,
-      headers: getHeaders(store),
+      headers: getHeaders(),
       body: JSON.stringify(callAPI.payload),
     });
     const data = await res.json();
@@ -28,6 +28,8 @@ export const api = async (callAPI, next, actionWith, store) => {
       if (nextType) {
         if (nextType.type === 'login') {
           store.dispatch(nextType.action(data.email, data.password));
+        } else {
+          store.dispatch(nextType.action());
         }
       }
     } else {
@@ -49,17 +51,17 @@ export const api = async (callAPI, next, actionWith, store) => {
 };
 /**
  * Get headers
- * @return {Object} store
+ * @return {Object} headers
  */
-const getHeaders = store => {
+const getHeaders = () => {
   const token = localStorage.getItem('token');
   const headers = {
     'Content-Type': 'application/json',
   };
 
-  if (token && store.getStore().isAuth) {
+  if (token) {
     const tokenParsed = JSON.parse(token);
-    headers.Authentication = `Bearer ${tokenParsed.jwt}`;
+    headers.Authorization = `Bearer ${tokenParsed}`;
   }
 
   return headers;

@@ -6,8 +6,8 @@ export const API = {
       SIGNUP: '/auth/signup',
     },
     CREATE: '/users',
-    DELETE: '/users',
-    UPDATE: '/users',
+    DELETE: '/users/',
+    UPDATE: '/users/',
     GET: '/users',
   },
 };
