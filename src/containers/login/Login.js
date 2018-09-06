@@ -5,6 +5,7 @@ import { login } from '../../actions/user.actions';
 import { emailPattern, passwordPattern } from '../../constants/variables';
 import Input from '../../components/input/Input';
 import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
+import validation from '../../util/validator';
 
 export class Login extends React.PureComponent {
   state = {
@@ -28,40 +29,18 @@ export class Login extends React.PureComponent {
       password: { value: password },
     } = e.target;
 
-    if (this.validateForm()) {
+    const validateForm = validation(this.state.form);
+
+    this.setState({
+      form: validateForm.form,
+      isValidForm: validateForm.isValidForm,
+    });
+
+    if (validateForm.isValidForm) {
       const { login } = this.props;
 
       login(email, password);
     }
-  };
-
-  /**
-   * Validation Form
-   * @param {Array} form
-   */
-  validateForm = () => {
-    const formClone = Object.assign([], this.state.form);
-
-    formClone.forEach(element => {
-      if (element.isRequired && element.valid === '') {
-        element.isValid = false;
-      }
-      if (element.pattern) {
-        const regex = RegExp(element.pattern);
-        const res = regex.test(element.value);
-        element.isValid = res;
-      }
-    });
-
-    const isValidFilter = formClone.filter(item => item.isValid === true);
-    const isValidFormFilter = isValidFilter.length === formClone.length;
-
-    this.setState({
-      form: formClone,
-      isValidForm: isValidFormFilter,
-    });
-
-    return isValidFormFilter;
   };
 
   /**
