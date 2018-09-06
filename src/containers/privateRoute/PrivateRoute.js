@@ -3,24 +3,36 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ component: Component, user, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      user.isAuth ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-      )
-    }
-  />
-);
+export class PrivateRoute extends React.PureComponent {
+  static propTypes = {
+    user: PropTypes.shape({}).isRequired,
+    component: PropTypes.func.isRequired,
+  };
 
-PrivateRoute.propTypes = {
-  user: PropTypes.shape({}).isRequired,
-  component: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired,
-};
+  render() {
+    const { user, component: Component } = this.props;
 
-const mapStateToProps = state => ({ user: state.user });
-export default connect(mapStateToProps)(PrivateRoute);
+    return (
+      <Route
+        render={props =>
+          user.isAuth ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+          )
+        }
+      />
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PrivateRoute);

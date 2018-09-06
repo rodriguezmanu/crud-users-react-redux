@@ -5,6 +5,7 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
+  FILTER_USER_SUCCESS,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../middleware/api';
@@ -38,4 +39,12 @@ export const deleteUser = (id, isCurrent) => {
       endpoint: API.URL + API.USERS.DELETE + id,
     },
   };
+};
+
+/**
+ * Filter User handler handler
+ * @param {String} name
+ */
+export const filterUser = name => dispatch => {
+  dispatch({ type: FILTER_USER_SUCCESS, name });
 };

@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import {
   LOGIN_SUCCESS,
   LOGIN_REQUEST,
@@ -6,7 +7,9 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
   LOGOUT_SUCCESS,
+  ME_REQUEST,
   ME_SUCCESS,
+  ME_FAILURE,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../middleware/api';
@@ -49,8 +52,16 @@ export const logout = () => dispatch => {
 
 /**
  * Me handler
- * @param {Object} user
  */
-export const me = user => dispatch => {
-  dispatch({ type: ME_SUCCESS, user });
+export const me = () => dispatch => {
+  dispatch({ type: ME_REQUEST });
+
+  try {
+    const token = localStorage.getItem('token');
+    const user = jwtDecode(token);
+
+    dispatch({ type: ME_SUCCESS, user });
+  } catch (err) {
+    dispatch({ type: ME_FAILURE });
+  }
 };

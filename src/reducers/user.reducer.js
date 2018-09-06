@@ -6,7 +6,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT_SUCCESS,
+  ME_REQUEST,
   ME_SUCCESS,
+  ME_FAILURE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -54,11 +56,22 @@ const user = (state = initialState, action) => {
     case LOGOUT_SUCCESS:
       localStorage.removeItem('token');
       return {};
+    case ME_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
     case ME_SUCCESS:
       return {
         ...state,
         data: action.user,
         isAuth: true,
+        isFetching: false,
+      };
+    case ME_FAILURE:
+      return {
+        ...state,
+        isAuth: false,
         isFetching: false,
       };
     default:

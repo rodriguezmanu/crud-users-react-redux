@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
 
 export default function Authorization(allowedRoles) {
   return WrappedComponent => {
@@ -10,11 +11,16 @@ export default function Authorization(allowedRoles) {
       };
 
       render() {
-        const { user } = this.props;
+        const { user, location } = this.props;
+
         if (allowedRoles.includes(user.data.role)) {
           return <WrappedComponent {...this.props} />;
         }
-        return null;
+        return (
+          <Route>
+            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+          </Route>
+        );
       }
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { getUsers, deleteUser, filterUser } from '../../actions/users.actions';
 
 export class Users extends React.PureComponent {
@@ -58,6 +59,9 @@ export class Users extends React.PureComponent {
                   >
                     Delete User
                   </button>
+                  <NavLink className="btn btn-primary" to={`/users/edit/${item.id}`}>
+                    Edit
+                  </NavLink>
                 </div>
               </div>
             ))}
