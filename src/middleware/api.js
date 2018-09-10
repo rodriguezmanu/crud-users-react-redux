@@ -73,7 +73,6 @@ export default store => next => action => {
   const callAPI = action[CALL_API];
 
   if (callAPI) {
-    const isValidForm = validate(callAPI.payload);
     const { types } = callAPI;
     const [requestType, successType, failureType, nextType] = types;
     const actionWith = data => {
@@ -82,11 +81,13 @@ export default store => next => action => {
       return finalAction;
     };
 
-    if (!isValidForm) {
-      return next(actionWith({ type: failureType, errors: callAPI.payload.errors }));
-    }
-
     next(actionWith({ type: requestType }));
+
+    if (callAPI.validate) {
+      if (!validate(callAPI.payload)) {
+        return next(actionWith({ type: failureType, errors: callAPI.payload.errors }));
+      }
+    }
 
     api(callAPI, next, actionWith, store);
   } else {

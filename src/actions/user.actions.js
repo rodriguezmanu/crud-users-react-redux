@@ -26,6 +26,7 @@ export const signup = (name, email, password, role) => ({
     method: 'post',
     types: [SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE, { type: 'login', action: login }],
     endpoint: API.URL + API.USERS.AUTH.SIGNUP,
+    validate: true,
   },
 });
 
@@ -40,6 +41,7 @@ export const login = (email, password) => ({
     method: 'post',
     types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
     endpoint: API.URL + API.USERS.AUTH.LOGIN,
+    validate: true,
   },
 });
 

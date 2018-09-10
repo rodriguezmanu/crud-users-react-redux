@@ -69,7 +69,11 @@ class App extends React.PureComponent {
                       </li>
                       <li className="nav-item">
                         <div className="nav-item">
-                          <button className="nav-link" type="button" onClick={this.logoutHandler}>
+                          <button
+                            className="btn btn-primary"
+                            type="button"
+                            onClick={this.logoutHandler}
+                          >
                             Logout
                           </button>
                         </div>
@@ -95,7 +99,7 @@ class App extends React.PureComponent {
                 <Switch>
                   <PublicRoute exact path="/login" component={Login} />
                   <PublicRoute path="/signup" component={Signup} />
-                  <PrivateRoute path="/users/edit/:id" component={Admin(EditUser)} />
+                  <PrivateRoute exact path="/users/:id" component={Admin(EditUser)} />
                   <PrivateRoute path="/users" component={Admin(Users)} />
                   <PrivateRoute path="/home" component={User(Home)} />
                   <Redirect to="/login" />

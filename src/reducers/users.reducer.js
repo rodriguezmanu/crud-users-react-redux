@@ -2,6 +2,9 @@ import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   GET_USERS_FAILURE,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILURE,
   FILTER_USER_SUCCESS,
 } from '../constants/actionTypes';
 
@@ -24,6 +27,23 @@ const users = (state = initialState, action) => {
         isFetching: false,
       };
     case GET_USERS_FAILURE:
+      return {
+        ...state,
+        error: action.data,
+        isFetching: false,
+      };
+    case GET_USER_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        data: action.data,
+        isFetching: false,
+      };
+    case GET_USER_FAILURE:
       return {
         ...state,
         error: action.data,

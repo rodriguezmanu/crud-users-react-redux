@@ -8,7 +8,7 @@ export const API = {
     CREATE: '/users',
     DELETE: '/users/',
     UPDATE: '/users/',
-    GET: '/users',
+    GET: '/users/',
   },
 };
 

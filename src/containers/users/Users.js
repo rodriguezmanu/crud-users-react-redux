@@ -46,12 +46,22 @@ export class Users extends React.PureComponent {
             users.filtered.map(item => (
               <div key={item.id}>
                 <li>
-                  <p>{item.name}</p>
-                  <p>{item.email}</p>
-                  <p>{item.role}</p>
+                  <p>
+                    <b>Name: </b>
+                    {item.name}
+                  </p>
+                  <p>
+                    <b>Email: </b>
+                    {item.email}
+                  </p>
+                  <p>
+                    <b>Role: </b>
+                    {item.role}
+                  </p>
                 </li>
                 <div>
                   <button
+                    className="btn btn-primary m-2"
                     type="button"
                     onClick={e => {
                       this.deleteUserHandler(item.id);
@@ -59,10 +69,11 @@ export class Users extends React.PureComponent {
                   >
                     Delete User
                   </button>
-                  <NavLink className="btn btn-primary" to={`/users/edit/${item.id}`}>
+                  <NavLink className="btn btn-primary" to={`/users/${item.id}`}>
                     Edit
                   </NavLink>
                 </div>
+                <hr />
               </div>
             ))}
         </ul>

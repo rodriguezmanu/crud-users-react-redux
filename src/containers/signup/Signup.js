@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/user.actions';
+import Input from '../../components/input/Input';
+import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
 
 export class Signup extends React.PureComponent {
   state = {
@@ -27,6 +29,7 @@ export class Signup extends React.PureComponent {
    */
   handleSubmit = e => {
     e.preventDefault();
+
     const {
       name: { value: name },
       email: { value: email },
@@ -39,58 +42,28 @@ export class Signup extends React.PureComponent {
   };
 
   render() {
+    const { role } = this.state;
+    const { user } = this.props;
+
     return (
       <div className="container">
         <h1 className="text-center m-2">SignUp</h1>
         <form name="form" onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <select
-              value={this.state.role}
-              name="role"
-              className="form-control"
-              onChange={this.handleChange}
-            >
+            <select value={role} name="role" className="form-control" onChange={this.handleChange}>
               <option value="admin">Admin</option>
               <option value="user">User</option>
             </select>
           </div>
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              className="form-control"
-              onChange={this.handleChange}
-              name="name"
-              type="text"
-              placeholder="Name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              className="form-control"
-              onChange={this.handleChange}
-              name="email"
-              autoComplete="username"
-              type="text"
-              placeholder="Email"
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              className="form-control"
-              onChange={this.handleChange}
-              name="password"
-              autoComplete="current-password"
-              type="password"
-              placeholder="Password"
-            />
-          </div>
+          <Input label="Name" type="text" placeholder="Name" name="name" />
+          <Input label="Email" type="email" placeholder="Email" name="email" />
+          <Input label="Password" type="password" placeholder="Password" name="password" />
           <div className="form-group text-center">
             <button type="submit" className="btn btn-primary">
               Submit
             </button>
           </div>
+          {user.errors && <ErrorFormMessage errors={user.errors} />}
         </form>
       </div>
     );

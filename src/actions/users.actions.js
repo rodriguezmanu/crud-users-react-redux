@@ -6,6 +6,9 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
   FILTER_USER_SUCCESS,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILURE,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../constants/variables';
@@ -19,6 +22,18 @@ export const getUsers = () => ({
     method: 'get',
     types: [GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE],
     endpoint: API.URL + API.USERS.GET,
+  },
+});
+
+/**
+ * Get single API handler
+ * @param {String} id
+ */
+export const getUser = id => ({
+  [CALL_API]: {
+    method: 'get',
+    types: [GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_FAILURE],
+    endpoint: API.URL + API.USERS.GET + id,
   },
 });
 
