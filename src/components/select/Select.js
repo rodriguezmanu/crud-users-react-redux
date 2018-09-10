@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class Input extends React.PureComponent {
+class Select extends React.PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
     value: PropTypes.string,
   };
 
@@ -24,23 +22,24 @@ class Input extends React.PureComponent {
   };
 
   render() {
-    const { label, type, placeholder, name } = this.props;
+    const { label, name } = this.props;
 
     return (
       <React.Fragment>
         <div className="form-group">
           <label>{label}</label>
-          <input
-            className="form-control"
-            name={name}
-            type={type}
-            placeholder={placeholder}
+          <select
             value={this.state[name]}
+            name="role"
+            className="form-control"
             onChange={this.handleChange}
-          />
+          >
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
         </div>
       </React.Fragment>
     );
   }
 }
-export default Input;
+export default Select;

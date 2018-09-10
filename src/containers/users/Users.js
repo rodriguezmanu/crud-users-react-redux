@@ -38,8 +38,9 @@ export class Users extends React.PureComponent {
 
     return (
       <div>
-        <div>
+        <div className="m-2 text-center">
           <input type="text" placeholder="Search" onChange={this.filterUserList} />
+          <hr />
         </div>
         <ul>
           {users.filtered &&

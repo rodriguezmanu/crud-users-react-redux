@@ -9,6 +9,9 @@ import {
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../constants/variables';
@@ -27,7 +30,7 @@ export const getUsers = () => ({
 
 /**
  * Get single API handler
- * @param {String} id
+ * @param {Number} id
  */
 export const getUser = id => ({
   [CALL_API]: {
@@ -63,3 +66,20 @@ export const deleteUser = (id, isCurrent) => {
 export const filterUser = name => dispatch => {
   dispatch({ type: FILTER_USER_SUCCESS, name });
 };
+
+/**
+ * Update User API handler
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} email
+ * @param {String} password
+ */
+export const updateUser = (id, name, email, password, role) => ({
+  [CALL_API]: {
+    payload: { id, name, email, password, role },
+    method: 'put',
+    types: [UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE],
+    endpoint: API.URL + API.USERS.UPDATE + id,
+    validate: true,
+  },
+});
