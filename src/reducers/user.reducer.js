@@ -31,6 +31,7 @@ const user = (state = initialState, action) => {
     case SIGNUP_FAILURE:
       return {
         ...state,
+        errors: action.errors,
         isFetching: false,
       };
     case LOGIN_REQUEST:
@@ -50,7 +51,7 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         isAuth: false,
-        error: action.data,
+        errors: action.errors,
         isFetching: false,
       };
     case LOGOUT_SUCCESS:

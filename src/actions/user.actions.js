@@ -12,7 +12,7 @@ import {
   ME_FAILURE,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
-import { CALL_API } from '../middleware/api';
+import { CALL_API } from '../constants/variables';
 
 /**
  * Signup API handler

@@ -6,26 +6,6 @@ class Input extends React.PureComponent {
     label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    onChangeInput: PropTypes.func.isRequired,
-  };
-
-  /**
-   * Handler change form
-   */
-  handleChange = e => {
-    const { name, value } = e.target;
-    const { onChangeInput } = this.props;
-
-    onChangeInput(
-      {
-        [name]: {
-          value,
-          name,
-          ...this.props,
-        },
-      },
-      name
-    );
   };
 
   render() {
@@ -35,17 +15,10 @@ class Input extends React.PureComponent {
       <React.Fragment>
         <div className="form-group">
           <label>{label}</label>
-          <input
-            className="form-control"
-            onChange={this.handleChange}
-            name={type}
-            type={type}
-            placeholder={placeholder}
-          />
+          <input className="form-control" name={type} type={type} placeholder={placeholder} />
         </div>
       </React.Fragment>
     );
   }
 }
-
 export default Input;

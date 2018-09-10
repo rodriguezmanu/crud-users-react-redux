@@ -8,7 +8,7 @@ import {
   FILTER_USER_SUCCESS,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
-import { CALL_API } from '../middleware/api';
+import { CALL_API } from '../constants/variables';
 import { logout } from './user.actions';
 
 /**

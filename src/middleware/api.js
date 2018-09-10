@@ -1,4 +1,4 @@
-export const CALL_API = 'Call API';
+import { emailPattern, passwordPattern, namePattern, CALL_API } from '../constants/variables';
 
 /**
  * Handle communication with web service
@@ -37,6 +37,7 @@ export const api = async (callAPI, next, actionWith, store) => {
         actionWith({
           data,
           type: failureType,
+          errors: ['Error with API, please try again'],
         })
       );
     }
@@ -44,7 +45,7 @@ export const api = async (callAPI, next, actionWith, store) => {
     next(
       actionWith({
         type: failureType,
-        error: e.message || 'error',
+        errors: [e.message || 'Error with API, please try again'],
       })
     );
   }
@@ -72,13 +73,18 @@ export default store => next => action => {
   const callAPI = action[CALL_API];
 
   if (callAPI) {
+    const isValidForm = validate(callAPI.payload);
     const { types } = callAPI;
-    const [requestType] = types;
+    const [requestType, successType, failureType, nextType] = types;
     const actionWith = data => {
       const finalAction = Object.assign({}, action, data);
       delete finalAction[CALL_API];
       return finalAction;
     };
+
+    if (!isValidForm) {
+      return next(actionWith({ type: failureType, errors: callAPI.payload.errors }));
+    }
 
     next(actionWith({ type: requestType }));
 
@@ -86,4 +92,51 @@ export default store => next => action => {
   } else {
     return next(action);
   }
+};
+
+/**
+ * Validate form data
+ *
+ * @param {Object} payload
+ * @return {Boolean}
+ */
+const validate = payload => {
+  let res;
+  let regex;
+  payload.errors = [];
+
+  for (const key in payload) {
+    if (payload.hasOwnProperty(key)) {
+      const element = payload[key];
+      switch (key) {
+        case 'password':
+          regex = RegExp(passwordPattern);
+          res = regex.test(element);
+          if (!res) {
+            payload.errors.push(
+              'Minimum eight characters, at least one letter, one number and one special'
+            );
+          }
+          break;
+        case 'email':
+          regex = RegExp(emailPattern);
+          res = regex.test(element);
+          if (!res) {
+            payload.errors.push('Must be a valid Email');
+          }
+          break;
+        case 'name':
+          regex = RegExp(namePattern);
+          res = regex.test(element);
+          if (!res) {
+            payload.errors.push('Must be a valid Name');
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+  return payload.errors.length === 0;
 };
