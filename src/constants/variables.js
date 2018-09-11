@@ -3,4 +3,6 @@ export const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\
 export const namePattern = /^[a-zA-z ,.'-]+$/;
 export const adminRole = 'admin';
 export const userRole = 'user';
+export const userRoles = ['user'];
+export const adminRoles = ['admin'];
 export const CALL_API = 'Call API';

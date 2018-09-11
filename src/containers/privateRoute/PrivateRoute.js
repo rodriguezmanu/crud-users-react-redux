@@ -10,12 +10,11 @@ export class PrivateRoute extends React.PureComponent {
   };
 
   render() {
-    const { user, component: Component } = this.props;
-
+    const { user, component: Component, allowedRoles } = this.props;
     return (
       <Route
         render={props =>
-          user.isAuth ? (
+          user.isAuth && allowedRoles.includes(user.data.role) ? (
             <Component {...props} />
           ) : (
             <Redirect to={{ pathname: '/login', state: { from: props.location } }} />

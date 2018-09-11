@@ -8,6 +8,10 @@ class Select extends React.PureComponent {
     value: PropTypes.string,
   };
 
+  static defaultProp = {
+    value: '',
+  };
+
   state = {
     [this.props.name]: this.props.value,
   };

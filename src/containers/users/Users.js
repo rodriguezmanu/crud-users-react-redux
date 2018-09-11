@@ -12,6 +12,7 @@ export class Users extends React.PureComponent {
 
   componentWillMount() {
     const { getUsers } = this.props;
+
     getUsers();
   }
 
@@ -30,6 +31,7 @@ export class Users extends React.PureComponent {
    */
   filterUserList = event => {
     const { filterUser } = this.props;
+
     filterUser(event.target.value);
   };
 

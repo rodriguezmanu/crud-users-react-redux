@@ -24,6 +24,7 @@
     "react/prefer-stateless-function": [0],
     "jsx-a11y/label-has-associated-control": [0],
     "jsx-a11y/label-has-for": [0],
+    "no-shadow": [0],
     "prettier/prettier": [
       "error",
       {

@@ -1,16 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
-import Authorization from '../authorization/Authorization';
 import Users from '../users/Users';
 import EditUser from '../users/EditUser';
 import Home from '../../components/home/Home';
 import PrivateRoute from '../privateRoute/PrivateRoute';
 import PublicRoute from '../publicRoute/PublicRoute';
 import { logout, me } from '../../actions/user.actions';
+import { adminRoles, userRoles } from '../../constants/variables';
 
 class App extends React.PureComponent {
   static propTypes = {
@@ -39,8 +39,6 @@ class App extends React.PureComponent {
   };
 
   render() {
-    const User = Authorization(['user']);
-    const Admin = Authorization(['admin']);
     const { user } = this.props;
 
     return (
@@ -99,9 +97,9 @@ class App extends React.PureComponent {
                 <Switch>
                   <PublicRoute exact path="/login" component={Login} />
                   <PublicRoute path="/signup" component={Signup} />
-                  <PrivateRoute exact path="/users/:id" component={Admin(EditUser)} />
-                  <PrivateRoute path="/users" component={Admin(Users)} />
-                  <PrivateRoute path="/home" component={User(Home)} />
+                  <PrivateRoute path="/users" component={Users} allowedRoles={adminRoles} />
+                  <PrivateRoute path="/users/:id" component={EditUser} allowedRoles={adminRoles} />
+                  <PrivateRoute path="/home" component={Home} allowedRoles={userRoles} />
                   <Redirect to="/login" />
                 </Switch>
               </div>
