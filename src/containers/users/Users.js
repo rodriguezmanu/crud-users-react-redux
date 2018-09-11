@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getUsers, deleteUser, filterUser } from '../../actions/users.actions';
+import ReactPaginate from 'react-paginate';
+import { getUsers, deleteUser, filterUser, getUsersCount } from '../../actions/users.actions';
 
 export class Users extends React.PureComponent {
   static propTypes = {
@@ -11,12 +12,14 @@ export class Users extends React.PureComponent {
     getUsers: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
     filterUser: PropTypes.func.isRequired,
+    getUsersCount: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
-    const { getUsers } = this.props;
+    const { getUsers, getUsersCount } = this.props;
 
     getUsers();
+    getUsersCount();
   }
 
   /**
@@ -38,6 +41,15 @@ export class Users extends React.PureComponent {
     filterUser(event.target.value);
   };
 
+  /**
+   *
+   */
+  handlePageClick = data => {
+    const { getUsers } = this.props;
+
+    getUsers(data.selected + 1);
+  };
+
   render() {
     const { users } = this.props;
 
@@ -47,42 +59,58 @@ export class Users extends React.PureComponent {
           <input type="text" placeholder="Search" onChange={this.filterUserList} />
           <hr />
         </div>
-        <ul>
-          {users.filtered &&
-            users.filtered.map(item => (
-              <div key={item.id}>
-                <li>
-                  <p>
-                    <b>Name: </b>
-                    {item.name}
-                  </p>
-                  <p>
-                    <b>Email: </b>
-                    {item.email}
-                  </p>
-                  <p>
-                    <b>Role: </b>
-                    {item.role.toUpperCase()}
-                  </p>
-                </li>
-                <div>
-                  <button
-                    className="btn btn-primary m-2"
-                    type="button"
-                    onClick={e => {
-                      this.deleteUserHandler(item.id);
-                    }}
-                  >
-                    Delete User
-                  </button>
-                  <NavLink className="btn btn-primary" to={`/users/${item.id}`}>
-                    Edit
-                  </NavLink>
-                </div>
-                <hr />
-              </div>
-            ))}
-        </ul>
+        <div>
+          {users.filtered && (
+            <div>
+              <ul>
+                {users.filtered.map(item => (
+                  <div key={item.id}>
+                    <li>
+                      <p>
+                        <b>Name: </b>
+                        {item.name}
+                      </p>
+                      <p>
+                        <b>Email: </b>
+                        {item.email}
+                      </p>
+                      <p>
+                        <b>Role: </b>
+                        {item.role.toUpperCase()}
+                      </p>
+                    </li>
+                    <div>
+                      <button
+                        className="btn btn-primary m-2"
+                        type="button"
+                        onClick={e => {
+                          this.deleteUserHandler(item.id);
+                        }}
+                      >
+                        Delete User
+                      </button>
+                      <NavLink className="btn btn-primary" to={`/users/${item.id}`}>
+                        Edit
+                      </NavLink>
+                    </div>
+                    <hr />
+                  </div>
+                ))}
+              </ul>
+            </div>
+          )}
+          <ReactPaginate
+            previousLabel="prev"
+            nextLabel="next"
+            pageCount={users.count}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName="pagination"
+            subContainerClassName="pages pagination"
+            activeClassName="active"
+          />
+        </div>
       </div>
     );
   }
@@ -97,6 +125,7 @@ const mapDispatchToProps = {
   getUsers,
   deleteUser,
   filterUser,
+  getUsersCount,
 };
 
 export default connect(

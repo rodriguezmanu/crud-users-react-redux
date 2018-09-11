@@ -9,6 +9,9 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILURE,
   FILTER_USER_SUCCESS,
+  GET_USERS_COUNT_REQUEST,
+  GET_USERS_COUNT_SUCCESS,
+  GET_USERS_COUNT_FAILURE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -75,6 +78,22 @@ const users = (state = initialState, action) => {
         filtered: state.data.filter(val =>
           val.name.toLowerCase().includes(action.name.toLowerCase())
         ),
+        isFetching: false,
+      };
+    case GET_USERS_COUNT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case GET_USERS_COUNT_SUCCESS:
+      return {
+        ...state,
+        count: Math.ceil(action.data.length / 10),
+        isFetching: false,
+      };
+    case GET_USERS_COUNT_FAILURE:
+      return {
+        ...state,
         isFetching: false,
       };
     default:

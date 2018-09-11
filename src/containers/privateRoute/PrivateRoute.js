@@ -7,12 +7,14 @@ export class PrivateRoute extends React.PureComponent {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
     component: PropTypes.func.isRequired,
+    allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
 
   render() {
-    const { user, component: Component, allowedRoles } = this.props;
+    const { user, component: Component, allowedRoles, ...rest } = this.props;
     return (
       <Route
+        {...rest}
         render={props =>
           user.isAuth && allowedRoles.includes(user.data.role) ? (
             <Component {...props} />

@@ -12,6 +12,9 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILURE,
+  GET_USERS_COUNT_REQUEST,
+  GET_USERS_COUNT_SUCCESS,
+  GET_USERS_COUNT_FAILURE,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../constants/variables';
@@ -19,11 +22,26 @@ import { logout } from './user.actions';
 
 /**
  * GetUsers API handler
+ *
+ * @param {Number} page
  */
-export const getUsers = () => ({
+export const getUsers = (page = 1) => ({
   [CALL_API]: {
     method: 'get',
     types: [GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE],
+    endpoint: `${API.URL + API.USERS.GET}?_page=${page}`,
+  },
+});
+
+/**
+ * GetUsers count API handler for pagination
+ *
+ * @param {Number} page
+ */
+export const getUsersCount = () => ({
+  [CALL_API]: {
+    method: 'get',
+    types: [GET_USERS_COUNT_REQUEST, GET_USERS_COUNT_SUCCESS, GET_USERS_COUNT_FAILURE],
     endpoint: API.URL + API.USERS.GET,
   },
 });
