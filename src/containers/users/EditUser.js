@@ -26,19 +26,31 @@ export class EditUser extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
+    const { updateUser, user } = this.props;
     const {
       name: { value: name },
       email: { value: email },
       password: { value: password },
       role: { value: role },
     } = e.target;
-    const { history, updateUser } = this.props;
+    const match = this.getUrlParams();
+    const checkRoleChange = user.data.id === Number(match.params.id) && user.data.role !== role;
 
+    updateUser(match.params.id, name, email, password, role, checkRoleChange);
+  };
+
+  /**
+   * Get Url Params
+   *
+   * @return {Object}
+   */
+  getUrlParams = () => {
+    const { history } = this.props;
     const match = matchPath(history.location.pathname, {
       path: '/users/:id',
     });
 
-    updateUser(match.params.id, name, email, password, role);
+    return match;
   };
 
   /**
@@ -54,11 +66,8 @@ export class EditUser extends React.PureComponent {
    * Get User Handler
    */
   getUserHandler = () => {
-    const { getUser, history } = this.props;
-
-    const match = matchPath(history.location.pathname, {
-      path: '/users/:id',
-    });
+    const { getUser } = this.props;
+    const match = this.getUrlParams();
 
     getUser(match.params.id);
   };
@@ -83,26 +92,33 @@ export class EditUser extends React.PureComponent {
             Back to Users
           </NavLink>
         </div>
-        {user.data && (
-          <form name="form" onSubmit={this.handleSubmit}>
-            <Select label="Role" name="role" value={user.data.role} />
-            <Input label="Name" type="text" placeholder="Name" name="name" value={user.data.name} />
-            <Input
-              label="Email"
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={user.data.email}
-            />
-            <Input label="Password" type="password" placeholder="Password" name="password" />
-            <div className="form-group text-center">
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </div>
-            {user.errors && <ErrorFormMessage errors={user.errors} />}
-          </form>
-        )}
+        {user.data &&
+          !user.isFetching && (
+            <form name="form" onSubmit={this.handleSubmit}>
+              <Select label="Role" name="role" value={user.data.role} />
+              <Input
+                label="Name"
+                type="text"
+                placeholder="Name"
+                name="name"
+                value={user.data.name}
+              />
+              <Input
+                label="Email"
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={user.data.email}
+              />
+              <Input label="Password" type="password" placeholder="Password" name="password" />
+              <div className="form-group text-center">
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+              {user.errors && <ErrorFormMessage errors={user.errors} />}
+            </form>
+          )}
       </div>
     );
   }

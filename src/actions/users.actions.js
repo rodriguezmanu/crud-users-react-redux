@@ -73,13 +73,21 @@ export const filterUser = name => dispatch => {
  * @param {String} name
  * @param {String} email
  * @param {String} password
+ * @param {Boolean} isCurrentUserRoleChange
  */
-export const updateUser = (id, name, email, password, role) => ({
-  [CALL_API]: {
-    payload: { id, name, email, password, role },
-    method: 'put',
-    types: [UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE],
-    endpoint: API.URL + API.USERS.UPDATE + id,
-    validate: true,
-  },
-});
+export const updateUser = (id, name, email, password, role, isCurrentUserRoleChange) => {
+  const actions = [UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE];
+  if (isCurrentUserRoleChange) {
+    actions.push({ type: 'logout', action: logout });
+  }
+
+  return {
+    [CALL_API]: {
+      payload: { id, name, email, password, role },
+      method: 'put',
+      types: actions,
+      endpoint: API.URL + API.USERS.UPDATE + id,
+      validate: true,
+    },
+  };
+};

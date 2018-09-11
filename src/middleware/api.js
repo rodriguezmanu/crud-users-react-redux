@@ -89,6 +89,10 @@ export default store => next => action => {
       }
     }
 
+    if (callAPI.payload && callAPI.payload.errors) {
+      delete callAPI.payload.errors;
+    }
+
     api(callAPI, next, actionWith, store);
   } else {
     return next(action);
@@ -107,7 +111,7 @@ const validate = payload => {
   payload.errors = [];
 
   for (const key in payload) {
-    if (payload.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(payload, key)) {
       const element = payload[key];
       switch (key) {
         case 'password':

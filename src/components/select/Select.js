@@ -8,13 +8,17 @@ class Select extends React.PureComponent {
     value: PropTypes.string,
   };
 
-  static defaultProp = {
+  static defaultProps = {
     value: '',
   };
 
-  state = {
-    [this.props.name]: this.props.value,
-  };
+  componentWillMount() {
+    const { name, value } = this.props;
+
+    this.setState({
+      [name]: value,
+    });
+  }
 
   /**
    * Handler change form

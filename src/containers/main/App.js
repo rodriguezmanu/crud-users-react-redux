@@ -97,8 +97,8 @@ class App extends React.PureComponent {
                 <Switch>
                   <PublicRoute exact path="/login" component={Login} />
                   <PublicRoute path="/signup" component={Signup} />
-                  <PrivateRoute path="/users" component={Users} allowedRoles={adminRoles} />
                   <PrivateRoute path="/users/:id" component={EditUser} allowedRoles={adminRoles} />
+                  <PrivateRoute path="/users" component={Users} allowedRoles={adminRoles} />
                   <PrivateRoute path="/home" component={Home} allowedRoles={userRoles} />
                   <Redirect to="/login" />
                 </Switch>

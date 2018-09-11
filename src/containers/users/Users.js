@@ -8,6 +8,9 @@ export class Users extends React.PureComponent {
   static propTypes = {
     users: PropTypes.shape([]).isRequired,
     user: PropTypes.shape({}).isRequired,
+    getUsers: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
+    filterUser: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -59,7 +62,7 @@ export class Users extends React.PureComponent {
                   </p>
                   <p>
                     <b>Role: </b>
-                    {item.role}
+                    {item.role.toUpperCase()}
                   </p>
                 </li>
                 <div>
