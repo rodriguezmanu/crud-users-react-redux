@@ -5,7 +5,7 @@
 - AUTH jwt
 - json server
 - custom form validation
-- paginations
+- pagination
 - Roles
 - Crud user
 - Login signup

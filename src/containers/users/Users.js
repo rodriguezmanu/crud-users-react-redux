@@ -42,12 +42,13 @@ export class Users extends React.PureComponent {
   };
 
   /**
-   *
+   * Handler click pagination
    */
   handlePageClick = data => {
     const { getUsers } = this.props;
 
     getUsers(data.selected + 1);
+    window.scrollTo(0, 0);
   };
 
   render() {
