@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const server = jsonServer.create();
 const router = jsonServer.router('./db.json');
+const port = process.env.PORT || 3004;
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
@@ -85,6 +86,6 @@ server.use(
 
 server.use(router);
 
-server.listen(3004, () => {
+server.listen(port, () => {
   console.log('Run API Server');
 });
