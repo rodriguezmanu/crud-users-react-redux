@@ -1,6 +1,6 @@
-## REDUX REACT ROLES CRUD APP
+# REDUX REACT ROLES CRUD APP
 
-# Features
+## Features
 
 - AUTH jwt
 - json server
@@ -10,7 +10,7 @@
 - Crud user
 - Login signup
 
-RUN
+## RUN
 
 - $ npm i
 - $ npm start
