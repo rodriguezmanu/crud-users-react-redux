@@ -1,16 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Login from '../login/Login';
-import Signup from '../signup/Signup';
-import Users from '../users/Users';
-import EditUser from '../users/EditUser';
-import Home from '../../components/home/Home';
-import PrivateRoute from '../privateRoute/PrivateRoute';
-import PublicRoute from '../publicRoute/PublicRoute';
 import { logout, me } from '../../actions/auth.actions';
-import { adminRoles, userRoles } from '../../constants/variables';
+import routes from '../../routes';
 
 class App extends React.PureComponent {
   static propTypes = {
@@ -94,16 +87,7 @@ class App extends React.PureComponent {
                   )}
                 </div>
               </nav>
-              <div className="page-container">
-                <Switch>
-                  <PublicRoute exact path="/login" component={Login} />
-                  <PublicRoute path="/signup" component={Signup} />
-                  <PrivateRoute path="/users/:id" component={EditUser} allowedRoles={adminRoles} />
-                  <PrivateRoute path="/users" component={Users} allowedRoles={adminRoles} />
-                  <PrivateRoute path="/home" component={Home} allowedRoles={userRoles} />
-                  <Redirect to="/login" />
-                </Switch>
-              </div>
+              {routes}
             </div>
           </Router>
         )}

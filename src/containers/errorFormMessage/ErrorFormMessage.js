@@ -1,10 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { cleanErrors } from '../../actions/auth.actions';
 
 class ErrorFormMessage extends React.PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cleanErrors: PropTypes.func.isRequired,
   };
+
+  componentWillUnmount() {
+    const { cleanErrors } = this.props;
+
+    cleanErrors();
+  }
 
   render() {
     const { errors } = this.props;
@@ -28,4 +37,15 @@ class ErrorFormMessage extends React.PureComponent {
   }
 }
 
-export default ErrorFormMessage;
+const mapStateToProps = state => ({
+  user: state.auth,
+});
+
+const mapDispatchToProps = {
+  cleanErrors,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ErrorFormMessage);

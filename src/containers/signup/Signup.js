@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/auth.actions';
 import Input from '../../components/input/Input';
-import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
+import ErrorFormMessage from '../errorFormMessage/ErrorFormMessage';
 
 export class Signup extends React.PureComponent {
   state = {

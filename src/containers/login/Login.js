@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, cleanErrors } from '../../actions/auth.actions';
+import { login } from '../../actions/auth.actions';
 import Input from '../../components/input/Input';
-import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
+import ErrorFormMessage from '../errorFormMessage/ErrorFormMessage';
 
 export class Login extends React.PureComponent {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
     login: PropTypes.func.isRequired,
-    cleanErrors: PropTypes.func.isRequired,
   };
-
-  componentWillUnmount() {
-    const { cleanErrors } = this.props;
-
-    cleanErrors();
-  }
 
   /**
    * Submit handler
@@ -60,7 +53,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   login,
-  cleanErrors,
 };
 
 export default connect(

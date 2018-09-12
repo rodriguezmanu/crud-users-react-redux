@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { matchPath } from 'react-router';
 import Input from '../../components/input/Input';
 import Select from '../../components/select/Select';
-import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
+import ErrorFormMessage from '../errorFormMessage/ErrorFormMessage';
 import { getUser, updateUser } from '../../actions/users.actions';
 
 export class EditUser extends React.PureComponent {
