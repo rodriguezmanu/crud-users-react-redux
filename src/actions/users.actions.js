@@ -18,7 +18,7 @@ import {
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../constants/variables';
-import { logout } from './user.actions';
+import { logout } from './auth.actions';
 
 /**
  * GetUsers API handler

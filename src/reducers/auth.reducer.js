@@ -17,7 +17,7 @@ const initialState = {
   isAuth: false,
 };
 
-const user = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_REQUEST:
       return {
@@ -86,4 +86,4 @@ const user = (state = initialState, action) => {
   }
 };
 
-export default user;
+export default auth;

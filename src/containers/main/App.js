@@ -9,13 +9,14 @@ import EditUser from '../users/EditUser';
 import Home from '../../components/home/Home';
 import PrivateRoute from '../privateRoute/PrivateRoute';
 import PublicRoute from '../publicRoute/PublicRoute';
-import { logout, me } from '../../actions/user.actions';
+import { logout, me } from '../../actions/auth.actions';
 import { adminRoles, userRoles } from '../../constants/variables';
 
 class App extends React.PureComponent {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
     logout: PropTypes.func.isRequired,
+    me: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -112,7 +113,7 @@ class App extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {

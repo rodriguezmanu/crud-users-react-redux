@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, cleanErrors } from '../../actions/user.actions';
+import { login, cleanErrors } from '../../actions/auth.actions';
 import Input from '../../components/input/Input';
 import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
 
@@ -55,7 +55,7 @@ export class Login extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {

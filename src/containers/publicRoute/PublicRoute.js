@@ -40,7 +40,7 @@ export class PublicRoute extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {};

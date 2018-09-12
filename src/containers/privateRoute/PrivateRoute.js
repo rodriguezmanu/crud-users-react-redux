@@ -28,7 +28,7 @@ export class PrivateRoute extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {};

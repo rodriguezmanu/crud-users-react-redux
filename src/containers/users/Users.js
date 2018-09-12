@@ -152,7 +152,7 @@ export class Users extends React.PureComponent {
 
 const mapStateToProps = state => ({
   users: state.users,
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {

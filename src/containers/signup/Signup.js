@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { signup } from '../../actions/user.actions';
+import { signup } from '../../actions/auth.actions';
 import Input from '../../components/input/Input';
 import ErrorFormMessage from '../../components/errorFormMessage/ErrorFormMessage';
 
@@ -71,7 +71,7 @@ export class Signup extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.auth,
 });
 
 const mapDispatchToProps = {
