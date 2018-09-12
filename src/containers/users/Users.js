@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { getUsers, deleteUser, filterUser, getUsersCount } from '../../actions/users.actions';
+import './Users.css';
+import { limitUsers } from '../../constants/variables';
 
 export class Users extends React.PureComponent {
   static propTypes = {
@@ -13,6 +15,10 @@ export class Users extends React.PureComponent {
     deleteUser: PropTypes.func.isRequired,
     filterUser: PropTypes.func.isRequired,
     getUsersCount: PropTypes.func.isRequired,
+  };
+
+  state = {
+    filtered: false,
   };
 
   componentWillMount() {
@@ -38,7 +44,16 @@ export class Users extends React.PureComponent {
   filterUserList = event => {
     const { filterUser } = this.props;
 
-    filterUser(event.target.value);
+    if (event.target.value === '') {
+      this.setState({
+        filtered: false,
+      });
+    } else {
+      filterUser(event.target.value);
+      this.setState({
+        filtered: true,
+      });
+    }
   };
 
   /**
@@ -51,11 +66,39 @@ export class Users extends React.PureComponent {
     window.scrollTo(0, 0);
   };
 
+  /**
+   * Render paginate component
+   */
+  renderPaginate = () => {
+    const { users } = this.props;
+    const { filtered } = this.state;
+    const pageCount = filtered ? users.countFiltered : users.count;
+
+    if (users.count <= limitUsers) {
+      return (
+        <div className="m-2">
+          <ReactPaginate
+            previousLabel="prev"
+            nextLabel="next"
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName="pagination"
+            subContainerClassName="pages pagination"
+            activeClassName="active"
+          />
+        </div>
+      );
+    }
+    return null;
+  };
+
   render() {
     const { users } = this.props;
 
     return (
-      <div>
+      <div className="m-2 text-center">
         <div className="m-2 text-center">
           <input type="text" placeholder="Search" onChange={this.filterUserList} />
           <hr />
@@ -63,7 +106,7 @@ export class Users extends React.PureComponent {
         <div>
           {users.filtered && (
             <div>
-              <ul>
+              <ul className="list-unstyled">
                 {users.filtered.map(item => (
                   <div key={item.id}>
                     <li>
@@ -100,17 +143,7 @@ export class Users extends React.PureComponent {
               </ul>
             </div>
           )}
-          <ReactPaginate
-            previousLabel="prev"
-            nextLabel="next"
-            pageCount={users.count}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={this.handlePageClick}
-            containerClassName="pagination"
-            subContainerClassName="pages pagination"
-            activeClassName="active"
-          />
+          {this.renderPaginate()}
         </div>
       </div>
     );

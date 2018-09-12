@@ -35,9 +35,8 @@ export const api = async (callAPI, next, actionWith, store) => {
     } else {
       next(
         actionWith({
-          data,
           type: failureType,
-          errors: ['Error with API, please try again'],
+          errors: [data.message || 'Error with API, please try again'],
         })
       );
     }

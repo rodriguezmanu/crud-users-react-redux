@@ -6,3 +6,4 @@ export const userRole = 'user';
 export const userRoles = ['user'];
 export const adminRoles = ['admin'];
 export const CALL_API = 'Call API';
+export const limitUsers = 10;

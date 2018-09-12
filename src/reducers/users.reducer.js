@@ -13,12 +13,14 @@ import {
   GET_USERS_COUNT_SUCCESS,
   GET_USERS_COUNT_FAILURE,
 } from '../constants/actionTypes';
+import { limitUsers } from '../constants/variables';
 
 const initialState = {
   isFetching: false,
 };
 
 const users = (state = initialState, action) => {
+  let filtered;
   switch (action.type) {
     case GET_USERS_REQUEST:
       return {
@@ -65,6 +67,7 @@ const users = (state = initialState, action) => {
         ...state,
         data: action.data,
         isFetching: false,
+        errors: null,
       };
     case UPDATE_USER_FAILURE:
       return {
@@ -73,11 +76,14 @@ const users = (state = initialState, action) => {
         isFetching: false,
       };
     case FILTER_USER_SUCCESS:
+      filtered = state.data.filter(val =>
+        val.name.toLowerCase().includes(action.name.toLowerCase())
+      );
+
       return {
         ...state,
-        filtered: state.data.filter(val =>
-          val.name.toLowerCase().includes(action.name.toLowerCase())
-        ),
+        filtered,
+        countFiltered: Math.ceil(filtered.length / limitUsers),
         isFetching: false,
       };
     case GET_USERS_COUNT_REQUEST:
@@ -88,7 +94,7 @@ const users = (state = initialState, action) => {
     case GET_USERS_COUNT_SUCCESS:
       return {
         ...state,
-        count: Math.ceil(action.data.length / 10),
+        count: Math.ceil(action.data.length / limitUsers),
         isFetching: false,
       };
     case GET_USERS_COUNT_FAILURE:
