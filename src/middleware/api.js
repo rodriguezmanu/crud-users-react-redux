@@ -28,6 +28,8 @@ export const api = async (callAPI, next, actionWith, store) => {
       if (nextType) {
         if (nextType.type === 'login') {
           store.dispatch(nextType.action(data.email, data.password));
+        } else if (nextType.type === 'redirect') {
+          store.dispatch(nextType.action);
         } else {
           store.dispatch(nextType.action());
         }

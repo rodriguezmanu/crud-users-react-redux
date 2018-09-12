@@ -116,9 +116,9 @@ export class EditUser extends React.PureComponent {
                   Submit
                 </button>
               </div>
-              {user.errors && <ErrorFormMessage errors={user.errors} />}
             </form>
           )}
+        {user.errors && <ErrorFormMessage errors={user.errors} />}
       </div>
     );
   }

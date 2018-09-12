@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout, me } from '../../actions/auth.actions';
 import routes from '../../routes';
+import history from '../../history';
 
 class App extends React.PureComponent {
   static propTypes = {
@@ -38,7 +40,7 @@ class App extends React.PureComponent {
     return (
       <React.Fragment>
         {!user.isFetching && (
-          <Router>
+          <ConnectedRouter history={history}>
             <div>
               <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="navbar-brand">APP</div>
@@ -89,7 +91,7 @@ class App extends React.PureComponent {
               </nav>
               {routes}
             </div>
-          </Router>
+          </ConnectedRouter>
         )}
       </React.Fragment>
     );

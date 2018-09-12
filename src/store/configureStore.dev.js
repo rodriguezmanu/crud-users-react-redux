@@ -2,14 +2,17 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
+import { createBrowserHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import rootReducer from '../reducers';
 import api from '../middleware/api';
+import history from '../history';
 
 const configureStore = preloadedState => {
   const store = createStore(
-    rootReducer,
+    connectRouter(history)(rootReducer),
     preloadedState,
-    composeWithDevTools(applyMiddleware(thunk, api, logger))
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk, api, logger))
   );
 
   if (module.hot) {

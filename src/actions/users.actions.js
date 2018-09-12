@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
@@ -97,6 +98,8 @@ export const updateUser = (id, name, email, password, role, isCurrentUserRoleCha
   const actions = [UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE];
   if (isCurrentUserRoleChange) {
     actions.push({ type: 'logout', action: logout });
+  } else {
+    actions.push({ type: 'redirect', action: push('/users') });
   }
 
   return {

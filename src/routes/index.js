@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router';
+import { Switch, Redirect } from 'react-router';
 import Login from '../containers/login/Login';
 import Signup from '../containers/signup/Signup';
 import Users from '../containers/users/Users';
