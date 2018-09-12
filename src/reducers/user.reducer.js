@@ -9,6 +9,7 @@ import {
   ME_REQUEST,
   ME_SUCCESS,
   ME_FAILURE,
+  CLEAN_ERRORS,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -74,6 +75,11 @@ const user = (state = initialState, action) => {
         ...state,
         isAuth: false,
         isFetching: false,
+      };
+    case CLEAN_ERRORS:
+      return {
+        ...state,
+        errors: null,
       };
     default:
       return state;

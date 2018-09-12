@@ -10,6 +10,7 @@ import {
   ME_REQUEST,
   ME_SUCCESS,
   ME_FAILURE,
+  CLEAN_ERRORS,
 } from '../constants/actionTypes';
 import { API } from '../constants/endpoints';
 import { CALL_API } from '../constants/variables';
@@ -66,4 +67,11 @@ export const me = () => dispatch => {
   } catch (err) {
     dispatch({ type: ME_FAILURE });
   }
+};
+
+/**
+ * Clean Errors
+ */
+export const cleanErrors = () => dispatch => {
+  dispatch({ type: CLEAN_ERRORS });
 };
